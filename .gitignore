@@ -1,0 +1,27 @@
+node_modules/
+dist/
+
+# Secrets
+.env
+server/.env
+web/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+consolelogs
+
+# Python
+__pycache__/
+*.pyc
+
+# Cursor internals
+.cursor/
