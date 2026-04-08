@@ -316,11 +316,11 @@
 }
 
 .app-textarea--compact {
-  min-height: 56px;
+  min-height: 42px;
 }
 
 .app-textarea--code {
-  min-height: 200px;
+  min-height: 150px;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 13px;
   line-height: 1.7;
