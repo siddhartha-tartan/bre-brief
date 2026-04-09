@@ -303,7 +303,6 @@ function DocumentationScreen({
   copyState,
 }) {
   const [viewMode, setViewMode] = useState('preview')
-  const scrollSentinelRef = useRef(null)
   const containerRef = useRef(null)
   const userScrolledRef = useRef(false)
 
@@ -315,8 +314,9 @@ function DocumentationScreen({
   }
 
   useEffect(() => {
-    if (!isStreaming || userScrolledRef.current || !scrollSentinelRef.current) return
-    scrollSentinelRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    const el = containerRef.current
+    if (!isStreaming || userScrolledRef.current || !el) return
+    el.scrollTop = el.scrollHeight
   }, [markdown, isStreaming])
 
   useEffect(() => {
@@ -342,7 +342,14 @@ function DocumentationScreen({
   return (
     <>
       <PageHeader
-        title={isStreaming ? 'Generating Document' : 'Edit and Export'}
+        title={
+          isStreaming ? (
+            <span className="page-head-title-streaming">
+              <LoaderCircle size={18} className="spin" />
+              Generating Document
+            </span>
+          ) : 'Edit and Export'
+        }
         subtitle={
           isStreaming
             ? 'Your documentation is being written — watch it take shape'
@@ -411,10 +418,7 @@ function DocumentationScreen({
             >
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
               {isStreaming && (
-                <>
-                  <span className="streaming-cursor" aria-hidden="true" />
-                  <div ref={scrollSentinelRef} className="scroll-sentinel" />
-                </>
+                <span className="streaming-cursor" aria-hidden="true" />
               )}
             </article>
           )}

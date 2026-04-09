@@ -1,10 +1,17 @@
 /* ── Shell ── */
 .shell {
-  min-height: calc(100vh - 24px);
-  margin: 24px 24px 0;
+  height: 100vh;
   padding: 16px;
   background: #ffffff;
-  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .shell-top {
@@ -117,6 +124,12 @@
   line-height: 26px;
   font-weight: 700;
   color: var(--color-text-primary);
+}
+
+.page-head-title-streaming {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .page-head-sub {
@@ -727,10 +740,11 @@
 }
 
 .md-preview--scrollable {
-  max-height: 68vh;
+  max-height: calc(100vh - 220px);
   overflow-y: auto;
   scroll-behavior: smooth;
   contain: content;
+  padding-bottom: 40px;
 }
 
 .scroll-sentinel {
