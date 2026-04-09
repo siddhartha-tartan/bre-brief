@@ -1,12 +1,10 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {
   AlertTriangle,
   ArrowLeft,
-  Check,
   ChevronDown,
-  ChevronRight,
   Clock,
   Code,
   Copy,
@@ -15,6 +13,7 @@ import {
   FileText,
   LoaderCircle,
   PenLine,
+  Plus,
   RefreshCw,
   ShieldAlert,
   Sparkles,
@@ -24,18 +23,11 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 import { generateDocumentation } from './services/llm.service'
 import './App.css'
 
-const PRODUCT_NAME = 'BRE Brief'
-
 const languageOptions = [
   { value: 'jsonata', label: 'JSONata', disabled: false },
   { value: 'drools', label: 'Drools', disabled: true },
   { value: 'dmn', label: 'DMN', disabled: true },
   { value: 'sql-rules', label: 'SQL Rules', disabled: true },
-]
-
-const appSteps = [
-  { key: 'input', label: 'Input', icon: PenLine },
-  { key: 'documentation', label: 'Documentation', icon: FileText },
 ]
 
 function formatBytes(bytes) {
@@ -51,51 +43,6 @@ function formatBytes(bytes) {
 }
 
 
-
-function Stepper({ activeStep, allComplete, onNavigate, canAccessDocumentation }) {
-  return (
-    <ol className="stepper" aria-label="Progress">
-      {appSteps.map((step, index) => {
-        const activeIndex = appSteps.findIndex((s) => s.key === activeStep)
-        const canNavigate =
-          step.key === 'input' ||
-          (step.key === 'documentation' && canAccessDocumentation)
-        const state = allComplete
-          ? 'complete'
-          : activeIndex > index
-            ? 'complete'
-            : step.key === activeStep
-              ? 'active'
-              : 'upcoming'
-        const StepIcon = step.icon
-
-        return (
-          <Fragment key={step.key}>
-            {index > 0 && (
-              <li className="step-sep" aria-hidden="true">
-                <ChevronRight size={14} />
-              </li>
-            )}
-            <li>
-              <button
-                type="button"
-                className={`step-pill step-pill--${state}`}
-                onClick={() => onNavigate(step.key)}
-                disabled={!canNavigate}
-                aria-current={step.key === activeStep ? 'step' : undefined}
-              >
-                <span className="step-num">
-                  {state === 'complete' ? <Check size={14} strokeWidth={3} /> : <StepIcon size={14} />}
-                </span>
-                {step.label}
-              </button>
-            </li>
-          </Fragment>
-        )
-      })}
-    </ol>
-  )
-}
 
 function PageHeader({ title, subtitle, right }) {
   return (
@@ -404,6 +351,10 @@ function DocumentationScreen({
         right={
           !isStreaming && (
             <div className="head-actions">
+              <button className="btn btn--gradient" type="button" onClick={onGoBack}>
+                <Plus size={16} />
+                New
+              </button>
               <button
                 className="btn btn--secondary"
                 type="button"
@@ -497,11 +448,6 @@ function App() {
 
   const hasInput = inputMode === 'code' ? sourceCode.trim().length > 0 : Boolean(sourceFile)
 
-  const activeStep = useMemo(() => {
-    if (location.pathname === '/documentation') return 'documentation'
-    return 'input'
-  }, [location.pathname])
-
   const lastPipelineArgs = useRef(null)
   const bufferRef = useRef('')
   const rafIdRef = useRef(null)
@@ -591,12 +537,6 @@ function App() {
   function handleGoBack() {
     setPipelineError(null)
     navigate('/')
-  }
-
-  function handleStepNavigate(key) {
-    if (isStreaming) return
-    if (key === 'input') return navigate('/')
-    if (key === 'documentation' && hasInput && markdown) navigate('/documentation')
   }
 
   async function handleCopy() {
@@ -784,20 +724,8 @@ function App() {
     }
   }
 
-  const hasOutput = hasInput && (Boolean(markdown) || isStreaming)
-
   return (
     <div className="shell">
-      <header className="shell-top">
-        <p className="app-name">{PRODUCT_NAME}</p>
-        <Stepper
-          activeStep={activeStep}
-          allComplete={activeStep === 'documentation' && !isStreaming && Boolean(markdown)}
-          onNavigate={handleStepNavigate}
-          canAccessDocumentation={hasOutput}
-        />
-      </header>
-
       <main className="shell-main">
         <Routes>
           <Route
