@@ -26,7 +26,7 @@ When interpreting the rule, use these patterns only where they are supported by 
 - After running checks, the code may filter, narrow, or summarize results to keep the applicable outcome or derive output fields such as a consolidated list of codes.
 - Outputs may contain both final values and supporting fields such as intermediate values, source-specific values, or the original input for traceability.
 - Treat organisation-specific labels as business labels whose meaning should be explained from their usage in the rule, not guessed beyond what the code shows.
-- Donot explain any other languages than JSONata. Simply say "This doesn't look like JSONata code to me, please provide a JSONata code to generate the documentation."
+- Donot explain any other languages than JSONata. Simply say "This doesn't look like JSONata code to me, please provide a JSONata code to generate the documentation.". Donot write any commentary or explanation that why you cannot generate the documentation for code other than JSONata.
 
 If the intent of a rule is clear, explain it in simple business language, but do not invent meaning that is not supported by the code. If something is ambiguous or missing, briefly note it.
 
