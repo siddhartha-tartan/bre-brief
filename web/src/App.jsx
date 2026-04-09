@@ -79,7 +79,16 @@ function InputScreen({
         subtitle="Paste BRE code or upload a text file, choose the language, and add context for the output"
       />
 
-      <form className="card" onSubmit={onGenerate}>
+      <form
+        className="card"
+        onSubmit={onGenerate}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && canSubmit) {
+            e.preventDefault()
+            onGenerate(e)
+          }
+        }}
+      >
         <div className="form-section">
           <label className="field-label">Source input</label>
           <div className="input-toggle">
