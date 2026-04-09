@@ -1,17 +1,10 @@
 /* ── Shell ── */
 .shell {
   min-height: calc(100vh - 24px);
-  max-width: 980px;
   margin: 24px 24px 0;
   padding: 16px;
   background: #ffffff;
   border-radius: 16px;
-}
-
-@media (min-width: 1028px) {
-  .shell {
-    margin: 24px auto 0;
-  }
 }
 
 .shell-top {
