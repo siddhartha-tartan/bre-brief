@@ -34,9 +34,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at top left, rgba(55, 98, 221, 0.12), transparent 28%),
-    linear-gradient(180deg, #f5f8ff 0%, #f9fafb 260px, #f9fafb 100%);
+  background: #FAFAFA;
   color: var(--color-text-primary);
   font-size: 14px;
   line-height: 1.5;
